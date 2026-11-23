@@ -1,0 +1,3108 @@
+<!DOCTYPE html>
+
+<html lang="pt-BR">
+
+<head>
+
+<meta charset="UTF-8">
+
+<meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
+
+
+
+<title>ZeroVant — Military Flight</title>
+
+<link rel="icon" href="imagens/altitude-z.webp">
+
+
+
+<style>
+
+
+
+* {
+
+    box-sizing: border-box;
+
+}
+
+
+
+body {
+
+    margin: 0;
+
+    background: #08090d;
+
+    color: #eee;
+
+    font-family: Georgia, "Times New Roman", serif;
+
+    overflow: hidden;
+
+}
+
+/* =========================
+
+   MENU DE DIFICULDADE
+
+========================= */
+
+
+
+#difficultyScreen {
+
+    position: fixed;
+
+    inset: 0;
+
+    background:
+
+        radial-gradient(circle, #1d202b 0%, #08090d 70%);
+
+    display: flex;
+
+    justify-content: center;
+
+    align-items: center;
+
+    z-index: 100;
+
+}
+
+
+
+#difficultyBox {
+
+    width: 420px;
+
+    max-width: 90%;
+
+    background: #11131a;
+
+    border: 1px solid #555968;
+
+    padding: 35px;
+
+    text-align: center;
+
+}
+
+
+
+#difficultyBox h1 {
+
+    letter-spacing: 5px;
+
+    color: #d6b98c;
+
+    margin-bottom: 5px;
+
+}
+
+
+
+#difficultyBox p {
+
+    color: #9ca0ad;
+
+    font-size: 14px;
+
+    line-height: 1.5;
+
+}
+
+
+
+.difficultyButton {
+
+    width: 100%;
+
+    margin-top: 12px;
+
+    padding: 14px;
+
+
+
+    background: #181b24;
+
+    border: 1px solid #464a58;
+
+
+
+    color: #ddd;
+
+    font-family: Georgia, serif;
+
+    font-size: 16px;
+
+
+
+    cursor: pointer;
+
+}
+
+
+
+.difficultyButton:hover {
+
+    background: #292d38;
+
+    border-color: #d6b98c;
+
+}
+
+
+
+/* =========================
+
+   JOGO
+
+========================= */
+
+
+
+#game {
+
+    display: flex;
+
+    height: 100vh;
+
+}
+
+
+
+#gameArea {
+
+    position: relative;
+
+    flex: 1;
+
+    overflow: hidden;
+
+    background:
+
+        radial-gradient(circle at 50% 20%,
+
+        #20232e 0%,
+
+        #0c0e14 45%,
+
+        #050609 100%);
+
+}
+
+
+
+canvas {
+
+    display: block;
+
+    width: 100%;
+
+    height: 100%;
+
+}
+
+
+
+/* =========================
+
+   PAINEL
+
+========================= */
+
+
+
+#panel {
+
+    width: 390px;
+
+    background: #11131a;
+
+    border-left: 1px solid #353846;
+
+
+
+    padding: 20px;
+
+
+
+    display: flex;
+
+    flex-direction: column;
+
+}
+
+
+
+#title {
+
+    font-size: 27px;
+
+    letter-spacing: 3px;
+
+}
+
+
+
+#subtitle {
+
+    color: #999eae;
+
+    font-size: 12px;
+
+    margin-bottom: 15px;
+
+}
+
+
+
+#difficultyDisplay {
+
+    color: #d6b98c;
+
+    font-size: 13px;
+
+    margin-bottom: 12px;
+
+}
+
+
+
+#chapterTitle {
+
+    color: #d6b98c;
+
+    font-size: 19px;
+
+    margin-bottom: 10px;
+
+}
+
+
+
+#story {
+
+    background: #0b0c11;
+
+    border: 1px solid #30333f;
+
+
+
+    padding: 15px;
+
+
+
+    line-height: 1.55;
+
+    font-size: 14px;
+
+
+
+    height: 270px;
+
+
+
+    overflow-y: auto;
+
+
+
+    color: #d8d9df;
+
+}
+
+
+
+#scoreBox {
+
+    display: flex;
+
+    justify-content: space-between;
+
+
+
+    margin: 14px 0;
+
+
+
+    font-size: 14px;
+
+}
+
+
+
+#score {
+
+    color: #d6b98c;
+
+    font-weight: bold;
+
+}
+
+
+
+#chapter {
+
+    color: #9ca4bd;
+
+}
+
+
+
+#input {
+
+    width: 100%;
+
+
+
+    padding: 14px;
+
+
+
+    background: #08090d;
+
+
+
+    border: 1px solid #575b6a;
+
+
+
+    color: white;
+
+
+
+    outline: none;
+
+
+
+    font-size: 17px;
+
+
+
+    font-family: monospace;
+
+}
+
+
+
+#input:focus {
+
+    border-color: #d6b98c;
+
+}
+
+
+
+#hint {
+
+    margin-top: 8px;
+
+
+
+    color: #737887;
+
+
+
+    font-size: 12px;
+
+}
+
+
+
+#status {
+
+    margin-top: 8px;
+
+
+
+    min-height: 20px;
+
+
+
+    color: #c6c9d4;
+
+
+
+    font-size: 13px;
+
+}
+
+
+
+#credits {
+
+    margin-top: auto;
+
+    padding-top: 12px;
+
+    text-align: center;
+
+    color: #686d7a;
+
+    font-size: 11px;
+
+    letter-spacing: 1px;
+
+    border-top: 1px solid #292c36;
+
+}
+
+
+
+#credits strong {
+
+    color: #d6b98c;
+
+    font-weight: normal;
+
+}
+
+
+
+#stats {
+
+    margin-top: 10px;
+
+
+
+    padding: 10px;
+
+
+
+    background: #0b0c11;
+
+
+
+    border: 1px solid #292c36;
+
+
+
+    font-family: monospace;
+
+
+
+    font-size: 12px;
+
+
+
+    color: #9da2b1;
+
+}
+
+
+
+/* =========================
+
+   FINAL
+
+========================= */
+
+
+
+#ending {
+
+    position: absolute;
+
+
+
+    inset: 0;
+
+
+
+    background: rgba(5, 5, 9, 0.96);
+
+
+
+    display: none;
+
+
+
+    justify-content: center;
+
+    align-items: center;
+
+
+
+    text-align: center;
+
+
+
+    z-index: 50;
+
+}
+
+
+
+#endingBox {
+
+    width: 600px;
+
+    max-width: 90%;
+
+
+
+    padding: 35px;
+
+
+
+    border: 1px solid #555968;
+
+
+
+    background: #11131a;
+
+}
+
+
+
+#endingBox h1 {
+
+    letter-spacing: 6px;
+
+
+
+    color: #d6b98c;
+
+}
+
+
+
+.finalStats {
+
+    margin: 25px 0;
+
+
+
+    font-family: monospace;
+
+
+
+    line-height: 2;
+
+
+
+    color: #c9ccd5;
+
+}
+
+
+
+.finalWpm {
+
+    font-size: 42px;
+
+
+
+    color: #d6b98c;
+
+
+
+    margin: 15px;
+
+}
+
+
+
+button {
+
+    padding: 12px 20px;
+
+
+
+    background: #1b1e28;
+
+
+
+    color: #ddd;
+
+
+
+    border: 1px solid #4a4e5c;
+
+
+
+    cursor: pointer;
+
+}
+
+
+
+button:hover {
+
+    background: #282c38;
+
+}
+
+
+
+</style>
+
+</head>
+
+
+
+<body>
+
+<!-- =====================================================
+     MÚSICA DE FUNDO
+===================================================== -->
+<audio id="musicaFundo" src="audio/altzer0.mp3" preload="auto" loop></audio>
+
+
+
+
+
+
+<!-- =====================================================
+
+     ESCOLHA DA DIFICULDADE
+
+===================================================== -->
+
+
+
+<div id="difficultyScreen">
+
+
+
+    <div id="difficultyBox">
+
+
+
+        <h1>ZeroVant</h1>
+
+
+
+        <p>
+
+            MILITARY FLIGHT
+
+        </p>
+
+
+
+        <p>
+
+            Escolha a dificuldade antes de começar.
+
+            Sua velocidade será calculada em palavras por minuto.
+
+        </p>
+
+
+
+        <button
+
+            class="difficultyButton"
+
+            onclick="startGame('easy')">
+
+
+
+            FÁCIL
+
+            <br>
+
+            <small>
+
+                VANTs de treinamento • palavras menores
+
+            </small>
+
+
+
+        </button>
+
+
+
+        <button
+
+            class="difficultyButton"
+
+            onclick="startGame('normal')">
+
+
+
+            NORMAL
+
+            <br>
+
+            <small>
+
+                Operação padrão • velocidade equilibrada
+
+            </small>
+
+
+
+        </button>
+
+
+
+        <button
+
+            class="difficultyButton"
+
+            onclick="startGame('hard')">
+
+
+
+            DIFÍCIL
+
+            <br>
+
+            <small>
+
+                VANTs rápidos • palavras maiores
+
+            </small>
+
+
+
+        </button>
+
+
+
+    </div>
+
+
+
+</div>
+
+
+
+
+
+<!-- =====================================================
+
+     JOGO
+
+===================================================== -->
+
+
+
+<div id="game">
+
+
+
+    <div id="gameArea">
+
+
+
+        <canvas id="canvas"></canvas>
+
+        <div id="spriteLayer" aria-hidden="true" style="position:absolute; inset:0; overflow:hidden; pointer-events:none; z-index:2;"></div>
+
+
+
+        <div id="gameOverScreen" style="display:none; position:absolute; inset:0; background:rgba(5,6,9,0.97); justify-content:center; align-items:center; text-align:center; z-index:60;">
+
+            <div id="gameOverBox" style="width:600px; max-width:90%; padding:35px; border:1px solid #8b3b3b; background:#11131a;">
+
+                <h1 style="letter-spacing:6px; color:#c45b5b; margin-bottom:10px;">GAME OVER</h1>
+
+                <p id="gameOverMessage">A aeronave foi perdida durante a operação.</p>
+
+                <div class="finalStats">
+
+                    Pontuação: <span id="gameOverScore">0</span><br>
+
+                    Precisão: <span id="gameOverAccuracy">0%</span><br>
+
+                    Capítulo alcançado: <span id="gameOverChapter">1/8</span>
+
+                </div>
+
+                <button onclick="restartGame()">TENTAR NOVAMENTE</button>
+
+                <button onclick="backToDifficulty()">MUDAR DIFICULDADE</button>
+
+            </div>
+
+        </div>
+
+
+
+        <div id="ending">
+
+
+
+            <div id="endingBox">
+
+
+
+                <h1>MISSÃO CONCLUÍDA</h1>
+
+
+
+                <p>
+
+                    OPERAÇÃO ZERO CONCLUÍDA. 40 DE 40 PALAVRAS ACERTADAS.
+
+                </p>
+
+
+
+                <div class="finalWpm">
+
+                    <span id="finalWpm">0</span> WPM
+
+                </div>
+
+
+
+                <div class="finalStats">
+
+
+
+                    Palavras corretas:
+
+                    <span id="finalWords">0</span>
+
+                    <br>
+
+
+
+                    Palavras tentadas:
+
+                    <span id="finalAttempts">0</span>
+
+                    <br>
+
+
+
+                    Precisão:
+
+                    <span id="finalAccuracy">0%</span>
+
+                    <br>
+
+
+
+                    Tempo:
+
+                    <span id="finalTime">0:00</span>
+
+
+
+                </div>
+
+
+
+                <button onclick="location.reload()">
+
+                    Nova missão
+
+                </button>
+
+
+
+            </div>
+
+
+
+        </div>
+
+
+
+    </div>
+
+
+
+
+
+    <!-- =================================================
+
+         PAINEL
+
+    ================================================= -->
+
+
+
+    <aside id="panel">
+
+
+
+        <div id="title">
+
+            ZeroVant
+
+        </div>
+
+
+
+        <div id="subtitle">
+
+            MILITARY FLIGHT — CLASSIFIED
+
+        </div>
+
+        <!-- Controle da trilha sonora -->
+        <button id="musicToggle" type="button" onclick="toggleMusic()"
+                style="width:100%; margin-bottom:12px;">
+            ♫ Música: ligada
+        </button>
+
+
+
+        <div id="difficultyDisplay">
+
+            Dificuldade: —
+
+        </div>
+
+
+
+        <div id="chapterTitle">
+
+            Capítulo 1
+
+        </div>
+
+
+
+        <div id="story"></div>
+
+
+
+        <div id="scoreBox">
+
+
+
+            <span>
+
+                Palavras:
+
+                <span id="score">0</span>
+
+            </span>
+
+
+
+            <span>
+
+                Capítulo:
+
+                <span id="chapter">1/8</span>
+
+            </span>
+
+
+
+            <span>
+
+                Pontuação necessária:
+
+                <span id="requiredScore">40</span>
+
+            </span>
+
+
+
+            <span>
+
+                Integridade:
+
+                <span id="lives">3</span>
+
+            </span>
+
+
+
+        </div>
+
+
+
+        <input
+
+            id="input"
+
+            type="text"
+
+            autocomplete="off"
+
+            placeholder="Digite a palavra..."
+
+        >
+
+
+
+        <div id="hint">
+
+            Digite exatamente a palavra mostrada nos VANTs.
+
+        </div>
+
+
+
+        <div id="status"></div>
+
+
+
+        <div id="stats">
+
+
+
+            TEMPO:
+
+            <span id="time">0:00</span>
+
+
+
+            <br>
+
+
+
+            WPM:
+
+            <span id="liveWpm">0</span>
+
+
+
+            <br>
+
+
+
+            PRECISÃO:
+
+            <span id="accuracy">100%</span>
+
+
+
+        </div>
+
+
+
+        <div id="credits">
+
+            Desenvolvido por <strong>HichiRuz</strong>
+
+        </div>
+
+
+
+    </aside>
+
+
+
+</div>
+
+
+
+
+
+<script>
+/* =====================================================
+   BLOQUEIO DE ZOOM
+   Bloqueia os atalhos e gestos comuns de zoom do navegador.
+   Alguns comandos de acessibilidade do sistema podem continuar disponíveis.
+===================================================== */
+window.addEventListener("wheel", (event) => {
+    if (event.ctrlKey || event.metaKey) event.preventDefault();
+}, { passive: false });
+
+["gesturestart", "gesturechange", "gestureend"].forEach((eventName) => {
+    document.addEventListener(eventName, (event) => event.preventDefault(), { passive: false });
+});
+
+document.addEventListener("keydown", (event) => {
+    if ((event.ctrlKey || event.metaKey) && ["+", "-", "=", "0"].includes(event.key)) {
+        event.preventDefault();
+    }
+}, { passive: false });
+
+
+
+
+
+/* =====================================================
+
+   ELEMENTOS
+
+===================================================== */
+
+
+
+const canvas =
+
+    document.getElementById("canvas");
+
+
+
+const ctx =
+
+    canvas.getContext("2d");
+
+/* =====================================================
+   GIFs ANIMADOS — ALTERE OS CAMINHOS AQUI
+===================================================== */
+
+// Esta classe decodifica os quadros do GIF e os desenha no Canvas.
+// Em navegadores sem ImageDecoder, usa o carregamento normal de GIF.
+class AnimatedGif {
+    constructor(src) {
+        this.src = src;
+        this.image = new Image();
+        this.image.src = src;
+        this.decoder = null;
+        this.bitmap = null;
+        this.frameIndex = 0;
+        this.frameCount = 0;
+        this.nextFrameAt = 0;
+        this.frameDuration = 100;
+        this.loadingFrame = false;
+        this.ready = false;
+
+        this.image.onload = () => {
+            if (!this.decoder) this.ready = true;
+        };
+        this.image.onerror = () => {
+            console.error("Não foi possível carregar o GIF:", this.src);
+        };
+
+        this.loadAnimatedFrames();
+    }
+
+    async loadAnimatedFrames() {
+        // ImageDecoder permite controlar a troca dos quadros do GIF.
+        if (!("ImageDecoder" in window)) return;
+
+        try {
+            const response = await fetch(this.src);
+            if (!response.ok) throw new Error("Arquivo não encontrado: " + this.src);
+
+            const data = await response.arrayBuffer();
+            this.decoder = new ImageDecoder({
+                data,
+                type: "image/gif"
+            });
+
+            await this.decoder.tracks.ready;
+            this.frameCount = this.decoder.tracks.selectedTrack.frameCount;
+
+            if (this.frameCount > 1) {
+                this.ready = true;
+                this.decodeNextFrame();
+            } else {
+                // Se o arquivo tiver apenas um quadro, continua usando o GIF normal.
+                this.decoder.close();
+                this.decoder = null;
+            }
+        } catch (error) {
+            console.warn("Decodificação avançada indisponível para", this.src, error);
+            this.decoder = null;
+        }
+    }
+
+    async decodeNextFrame() {
+        if (!this.decoder || this.loadingFrame || this.frameCount < 2) return;
+
+        this.loadingFrame = true;
+        try {
+            const result = await this.decoder.decode({
+                frameIndex: this.frameIndex,
+                completeFramesOnly: true
+            });
+
+            if (this.bitmap && this.bitmap.close) this.bitmap.close();
+
+            this.bitmap = result.image;
+            this.frameDuration = Math.max(20, (this.bitmap.duration || 100000) / 1000);
+            this.frameIndex = (this.frameIndex + 1) % this.frameCount;
+            this.nextFrameAt = performance.now() + this.frameDuration;
+        } catch (error) {
+            console.warn("Erro ao ler quadro do GIF:", error);
+        } finally {
+            this.loadingFrame = false;
+        }
+    }
+
+    draw(ctx, x, y, width, height) {
+        if (this.decoder && this.bitmap) {
+            if (performance.now() >= this.nextFrameAt) {
+                this.decodeNextFrame();
+            }
+            ctx.drawImage(this.bitmap, x, y, width, height);
+        } else if (this.image.complete && this.image.naturalWidth > 0) {
+            // Fallback: o navegador mantém a animação nativa do GIF.
+            ctx.drawImage(this.image, x, y, width, height);
+        }
+    }
+}
+
+// Coloque os arquivos na pasta "imagens" e ajuste os nomes se necessário.
+const playerGif = new AnimatedGif("imagens/protagonista.gif"); // GIF do jogador
+const enemyGif = new AnimatedGif("imagens/enm.gif");           // GIF dos inimigos
+
+// Camada HTML para exibir GIFs animados nativamente, sem congelar no Canvas.
+const spriteLayer = document.getElementById("spriteLayer");
+let playerSpriteElement = null;
+const enemySpriteElements = new Map();
+
+function createSpriteElement(src, size, rotate = false) {
+    const img = document.createElement("img");
+    img.src = src;
+    img.alt = "";
+    img.draggable = false;
+    img.style.position = "absolute";
+    img.style.width = size + "px";
+    img.style.height = size + "px";
+    img.style.objectFit = "contain";
+    img.style.pointerEvents = "none";
+    img.style.userSelect = "none";
+    img.style.transform = "translate(-50%, -50%)" + (rotate ? " rotate(180deg)" : "");
+    return img;
+}
+
+function syncAnimatedSprites() {
+    if (!spriteLayer) return;
+
+    // Jogador
+    if (!playerSpriteElement) {
+        playerSpriteElement = createSpriteElement("imagens/protagonista.gif", 100);
+        spriteLayer.appendChild(playerSpriteElement);
+    }
+    playerSpriteElement.style.left = (width / 2) + "px";
+    playerSpriteElement.style.top = (height - 80) + "px";
+
+    // Inimigos: cria, posiciona e remove os elementos conforme a lista do jogo.
+    const activeEnemies = new Set(enemies);
+    for (const enemy of enemies) {
+        let img = enemySpriteElements.get(enemy);
+        if (!img) {
+            img = createSpriteElement("imagens/enm.gif", 80, true);
+            enemySpriteElements.set(enemy, img);
+            spriteLayer.appendChild(img);
+        }
+        img.style.left = enemy.x + "px";
+        img.style.top = enemy.y + "px";
+    }
+    for (const [enemy, img] of enemySpriteElements) {
+        if (!activeEnemies.has(enemy)) {
+            img.remove();
+            enemySpriteElements.delete(enemy);
+        }
+    }
+}
+
+
+
+// Música de fundo: edite o volume em MUSIC_VOLUME.
+const musicaFundo = document.getElementById("musicaFundo");
+const musicToggle = document.getElementById("musicToggle");
+const MUSIC_VOLUME = 0.50;
+musicaFundo.volume = MUSIC_VOLUME;
+
+// Mostra no Console se o arquivo de áudio não for encontrado/carregado.
+musicaFundo.addEventListener("error", () => {
+    console.error(
+        "Erro ao carregar audio/trilha.mp3. Confira o nome e a pasta do arquivo.",
+        musicaFundo.error
+    );
+});
+
+
+
+const input =
+
+    document.getElementById("input");
+
+
+
+const scoreElement =
+
+    document.getElementById("score");
+
+
+
+const chapterElement =
+
+    document.getElementById("chapter");
+
+
+
+const chapterTitle =
+
+    document.getElementById("chapterTitle");
+
+
+
+const storyElement =
+
+    document.getElementById("story");
+
+
+
+const statusElement =
+
+    document.getElementById("status");
+
+
+
+const difficultyDisplay =
+
+    document.getElementById("difficultyDisplay");
+
+
+
+const timeElement =
+
+    document.getElementById("time");
+
+
+
+const wpmElement =
+
+    document.getElementById("liveWpm");
+
+
+
+const accuracyElement =
+
+    document.getElementById("accuracy");
+
+
+
+
+
+/* =====================================================
+
+   CONFIGURAÇÕES
+
+===================================================== */
+
+
+
+/*
+ CONFIGURAÇÃO DE DIFICULDADE
+ speedMin/speedMax: velocidade-base em pixels por quadro de referência (60 FPS).
+ O deltaTime do gameLoop mantém essa velocidade consistente em monitores diferentes.
+ spawnTime: intervalo entre inimigos, em milissegundos.
+ Para facilitar: reduza as velocidades e aumente spawnTime.
+ Para dificultar: aumente as velocidades e reduza spawnTime.
+*/
+const difficulties = {
+    easy: { name: "Recruta", speedMin: 0.28, speedMax: 0.42, spawnTime: 2700 },
+    normal: { name: "Operador", speedMin: 0.45, speedMax: 0.65, spawnTime: 2200 },
+    hard: { name: "Espectro", speedMin: 0.70, speedMax: 0.95, spawnTime: 1600 }
+};
+
+
+
+let difficulty;
+
+
+
+
+
+/* =====================================================
+
+   HISTÓRIA
+
+===================================================== */
+
+
+
+const chapters = [
+
+
+
+{
+
+    title: "Capítulo 1 — Sinal Morto",
+
+    story: `
+
+   Raven recebe uma missão de reconhecimento em uma região abandonada.
+
+Durante o voo, seu radar detecta uma transmissão desconhecida. O sinal contém apenas três palavras:
+
+"Raven ainda responde."
+
+A transmissão desaparece antes que sua origem possa ser identificada.
+    `,
+
+    words: ["Raven","voar","decolagem","identificada","militar","piloto","desconhecida","reconhecimento","altitude","zero"]
+
+},
+
+
+
+{
+
+    title: "Capítulo 2 — Frequência Fantasma",
+
+    story: `
+
+    Após o primeiro contato, Raven começa a rastrear o sinal.
+
+A origem parece estar ligada a uma unidade militar oficialmente desativada anos atrás.
+
+Ao acessar os registros, ele encontra arquivos apagados e uma única referência ao Projeto Zero.
+
+    `,
+
+    words: ["oficialmente","contato","radar","interceptacao","tempestade","registros","projeto","sinal","comando","unidade"]
+
+},
+
+
+
+{
+
+    title: "Capítulo 3 — Céu Cego",
+
+    story: `
+
+   Raven é enviado para interceptar uma aeronave não identificada.
+
+Durante a perseguição, os sistemas de comunicação falham e o alvo desaparece do radar.
+
+Antes de perder o contato, Raven recebe uma mensagem:
+
+"Você não deveria ter sobrevivido."
+
+    `,
+
+    words: ["sobreviver","fantasma","base","mensagem","perseguir","controle","comunicacao","projeto","registro","retorno"]
+
+},
+
+
+
+{
+
+    title: "Capítulo 4 — Arquivo Zero",
+
+    story: `
+
+    Seguindo as pistas, Raven invade os registros de uma instalação militar abandonada.
+
+Os arquivos revelam um programa experimental destinado a desenvolver pilotos para missões sem comunicação ou suporte externo.
+
+O último relatório está corrompido. Seu título, porém, permanece intacto:
+
+OPERAÇÃO ZERO — SOBREVIVENTES: NENHUM.
+
+    `,
+
+    words: ["gravacao","piloto","desaparecido","fenomeno","radar","intacto","investigacao","permanencia","perigo","sozinho"]
+
+},
+
+
+
+{
+
+    title: "Capítulo 5 — Identidade Nula",
+
+    story: `
+
+    Raven tenta recuperar os registros de sua própria identificação militar.
+
+O sistema retorna uma resposta inesperada: seus dados foram removidos antes mesmo do encerramento da Operação Zero.
+
+Não existe fotografia, nome ou histórico de serviço.
+
+Apenas um codinome permanece registrado:
+
+Raven.
+
+    `,
+
+    words: ["vertice","experimental","codinome","tecnologia","encerramento","computador","missao","nome","prototipo","historico"]
+
+},
+
+
+
+{
+
+    title: "Capítulo 6 — Protocolo Fantasma",
+
+    story: `
+
+    Uma transmissão criptografada revela que o Projeto Zero nunca foi encerrado.
+
+Uma organização desconhecida está reconstruindo o sistema e utilizando aeronaves autônomas em operações clandestinas.
+
+No fim da mensagem, uma voz diz:
+
+"A unidade está incompleta. Tragam Raven de volta."
+
+    `,
+
+    words: ["combate","incompleta","radar","codigo","organizacao","epocas","desaparecidos","formacao","desconhecido","aproximacao"]
+
+},
+
+
+
+{
+
+    title: "Capítulo 7 — Última Coordenada",
+
+    story: `
+
+    Raven localiza a instalação responsável pelas transmissões.
+
+Dentro dela, encontra registros da noite em que sua antiga unidade desapareceu.
+
+As gravações mostram aeronaves decolando, sinais sendo interrompidos e uma última autorização de voo emitida em seu código.
+
+Então, uma nova mensagem aparece:
+
+"A primeira missão nunca terminou."
+
+    `,
+
+    words: ["coordenada","fenomeno","espaco","encontrar","duplicado","regiao","origem","autorizar","instrumentos","decolar"]
+
+},
+
+
+
+{
+
+    title: "Capítulo 8 — Zero Absoluto",
+
+    story: `
+
+   Raven alcança o núcleo do Projeto Zero e descobre que alguém aguardava seu retorno desde o desaparecimento da unidade.
+
+O sistema solicita sua identificação completa, mas não encontra nenhum registro válido.
+
+Raven ignora a solicitação e desativa o protocolo.
+
+Por alguns segundos, tudo permanece em silêncio.
+
+
+    FIM DA PARTE I.
+
+    `,
+
+    words: ["estrutura","nuvens","radar","sinais","rotas","permanecer","destruir","retorno","transmissao","silenciar"]
+
+}
+
+
+
+];
+
+
+
+
+
+/* =====================================================
+
+   VARIÁVEIS
+
+===================================================== */
+
+
+
+let width;
+
+let height;
+
+
+
+let score = 0;
+
+
+
+let attempts = 0;
+
+
+
+let lives = 3;
+
+
+
+let gameOver = false;
+
+
+
+let chapterIndex = 0;
+
+
+
+let enemies = [];
+
+
+
+let particles = [];
+
+
+
+let startTime = null;
+
+
+
+let elapsedSeconds = 0;
+
+
+
+let spawnInterval;
+
+/*
+ Controle de tempo do loop:
+ lastFrameTime guarda o instante do quadro anterior.
+ REFERENCE_FRAME_MS define a referência de 60 FPS para normalizar movimentos.
+*/
+let lastFrameTime = 0;
+const REFERENCE_FRAME_MS = 1000 / 60;
+
+
+
+
+
+/* =====================================================
+
+   RESIZE
+
+===================================================== */
+
+
+
+function resize() {
+
+
+
+    width = canvas.clientWidth;
+
+    height = canvas.clientHeight;
+
+
+
+    canvas.width =
+
+        width * devicePixelRatio;
+
+
+
+    canvas.height =
+
+        height * devicePixelRatio;
+
+
+
+    ctx.setTransform(
+
+        devicePixelRatio,
+
+        0,
+
+        0,
+
+        devicePixelRatio,
+
+        0,
+
+        0
+
+    );
+
+}
+
+
+
+window.addEventListener(
+
+    "resize",
+
+    resize
+
+);
+
+
+
+
+
+/* =====================================================
+
+   COMEÇAR JOGO
+
+===================================================== */
+
+
+
+// Inicia a música quando o jogador escolhe uma dificuldade. 
+async function startMusic() {
+    try {
+        await musicaFundo.play();
+        musicToggle.textContent = "♫ Música: ligada";
+    } catch (erro) {
+        console.warn("Não foi possível iniciar a música:", erro);
+        musicToggle.textContent = "♫ Clique para ativar a música";
+    }
+}
+
+// Botão para pausar ou retomar a trilha.
+async function toggleMusic() {
+    if (musicaFundo.paused) {
+        await startMusic();
+    } else {
+        musicaFundo.pause();
+        musicToggle.textContent = "♫ Música: desligada";
+    }
+}
+
+function startGame(selectedDifficulty) {
+    startMusic();
+
+
+
+    difficulty =
+
+        difficulties[selectedDifficulty];
+
+
+
+    score = 0;
+
+    attempts = 0;
+
+    lives = 3;
+
+    chapterIndex = 0;
+
+    enemies = [];
+
+    particles = [];
+
+    gameOver = false;
+
+    startTime = null;
+
+    elapsedSeconds = 0;
+    lastFrameTime = 0; // Reinicia o deltaTime ao iniciar uma partida.
+
+    document.getElementById(
+
+        "difficultyScreen"
+
+    ).style.display = "none";
+
+
+
+    document.getElementById("gameOverScreen").style.display = "none";
+
+    document.getElementById("ending").style.display = "none";
+
+
+
+    difficultyDisplay.textContent =
+
+        "Dificuldade: " +
+
+        difficulty.name;
+
+
+
+    resize();
+
+
+
+    loadChapter();
+
+
+
+    startTime =
+
+        Date.now();
+
+
+
+    spawnInterval =
+
+        setInterval(
+
+            createEnemy,
+
+            difficulty.spawnTime
+
+        );
+
+
+
+    input.focus();
+
+
+
+    gameLoop();
+
+}
+
+
+
+
+
+/* =====================================================
+
+   NORMALIZAR PALAVRA
+
+===================================================== */
+
+
+
+function normalize(text) {
+
+
+
+    return text
+
+        .toLowerCase()
+
+        .normalize("NFD")
+
+        .replace(
+
+            /[\u0300-\u036f]/g,
+
+            ""
+
+        );
+
+}
+
+
+
+
+
+/* =====================================================
+
+   CRIAR AVIÃO
+
+===================================================== */
+
+
+
+function createEnemy() {
+
+
+
+    if (gameOver) return;
+
+
+
+    const currentWords =
+
+        chapters[chapterIndex].words;
+
+
+
+    const word =
+
+        currentWords[
+
+            Math.floor(
+
+                Math.random() *
+
+                currentWords.length
+
+            )
+
+        ];
+
+
+
+    const speed =
+
+        difficulty.speedMin +
+
+        Math.random() *
+
+        (
+
+            difficulty.speedMax -
+
+            difficulty.speedMin
+
+        );
+
+
+
+    enemies.push({
+
+
+
+        x:
+
+            80 +
+
+            Math.random() *
+
+            (width - 160),
+
+
+
+        y: -60,
+
+
+
+        speed: speed,
+
+
+
+        word: word,
+
+
+
+        wobble:
+
+            Math.random() *
+
+            Math.PI *
+
+            2
+
+
+
+    });
+
+}
+
+
+
+
+
+/* =====================================================
+
+   AVIÃO DO JOGADOR
+
+===================================================== */
+
+
+
+function drawPlayer() {
+    // O GIF do jogador é exibido como elemento HTML sobre o Canvas.
+    // Isso permite que o navegador mantenha a animação nativa do arquivo GIF.
+}
+
+
+/* =====================================================
+
+   AVIÃO INIMIGO
+
+===================================================== */
+
+
+
+function drawEnemy(enemy) {
+    // O sprite animado é posicionado na camada HTML por syncAnimatedSprites().
+    // Aqui o Canvas desenha somente a palavra, mantendo-a sempre legível.
+    ctx.save();
+    ctx.translate(enemy.x, enemy.y);
+    ctx.font = "bold 14px monospace";
+    ctx.textAlign = "center";
+
+    const textWidth = ctx.measureText(enemy.word).width + 18;
+    ctx.fillStyle = "rgba(0,0,0,0.8)";
+    ctx.fillRect(-textWidth / 2, 35, textWidth, 23);
+
+    ctx.fillStyle = "#e5d7b9";
+    ctx.fillText(enemy.word, 0, 51);
+    ctx.restore();
+}
+
+
+/* =====================================================
+
+   EFEITO
+
+===================================================== */
+
+
+
+function createEffect(x, y) {
+
+
+
+    for (
+
+        let i = 0;
+
+        i < 12;
+
+        i++
+
+    ) {
+
+
+
+        particles.push({
+
+
+
+            x: x,
+
+
+
+            y: y,
+
+
+
+            vx:
+
+                (Math.random() - 0.5)
+
+                * 5,
+
+
+
+            vy:
+
+                (Math.random() - 0.5)
+
+                * 5,
+
+
+
+            life:
+
+                30 +
+
+                Math.random() * 20
+
+
+
+        });
+
+    }
+
+}
+
+
+
+
+
+function updateParticles() {
+
+
+
+    for (const p of particles) {
+
+
+
+        p.x += p.vx;
+
+
+
+        p.y += p.vy;
+
+
+
+        p.life--;
+
+
+
+    }
+
+
+
+    particles =
+
+        particles.filter(
+
+            p => p.life > 0
+
+        );
+
+}
+
+
+
+
+
+function drawParticles() {
+
+
+
+    for (const p of particles) {
+
+
+
+        ctx.fillStyle =
+
+            `rgba(214,185,140,${p.life / 50})`;
+
+
+
+        ctx.fillRect(
+
+            p.x,
+
+            p.y,
+
+            3,
+
+            3
+
+        );
+
+    }
+
+}
+
+
+
+
+
+/* =====================================================
+
+   ATUALIZAR WPM
+
+===================================================== */
+
+
+
+function updateStats() {
+
+
+
+    if (!startTime) return;
+
+
+
+    elapsedSeconds =
+
+        (Date.now() - startTime) / 1000;
+
+
+
+    const minutes =
+
+        elapsedSeconds / 60;
+
+
+
+    let wpm = 0;
+
+
+
+    if (minutes > 0) {
+
+
+
+        wpm =
+
+            score / minutes;
+
+
+
+    }
+
+
+
+    const accuracy =
+
+        attempts > 0
+
+        ? Math.min(100, (score / attempts) * 100)
+
+        : 100;
+
+
+
+    wpmElement.textContent =
+
+        Math.round(wpm);
+
+
+
+    accuracyElement.textContent =
+
+        Math.round(accuracy) + "%";
+
+
+
+    document.getElementById("lives").textContent = lives;
+
+
+
+    const totalSeconds =
+
+        Math.floor(elapsedSeconds);
+
+
+
+    const mins =
+
+        Math.floor(
+
+            totalSeconds / 60
+
+        );
+
+
+
+    const secs =
+
+        totalSeconds % 60;
+
+
+
+    timeElement.textContent =
+
+        mins +
+
+        ":" +
+
+        String(secs).padStart(
+
+            2,
+
+            "0"
+
+        );
+
+}
+
+
+
+
+
+/* =====================================================
+
+   NEUTRALIZAR
+
+===================================================== */
+
+
+
+function neutralizeEnemy(index) {
+
+
+
+    const enemy =
+
+        enemies[index];
+
+
+
+    createEffect(
+
+        enemy.x,
+
+        enemy.y
+
+    );
+
+
+
+    enemies.splice(
+
+        index,
+
+        1
+
+    );
+
+
+
+    score++;
+
+
+
+    scoreElement.textContent =
+
+        score;
+
+
+
+    statusElement.textContent =
+
+        "Alvo neutralizado.";
+
+
+
+    checkChapter();
+
+
+
+    updateStats();
+
+}
+
+
+
+
+
+/* =====================================================
+
+   CAPÍTULOS
+
+===================================================== */
+
+
+
+function checkChapter() {
+
+
+
+    /*
+
+        Existem 8 capítulos.
+
+        A cada 5 palavras acertadas, o jogador avança
+
+        para o próximo capítulo.
+
+
+
+        Ao chegar a 40 acertos, a missão é concluída.
+
+    */
+
+
+
+    const finalRequired = 40;
+
+    const wordsPerChapter = 5;
+
+
+
+    // Vitória final
+
+    if (score >= finalRequired) {
+
+        finishGame();
+
+        return;
+
+    }
+
+
+
+    // 0-4 acertos = capítulo 1
+
+    // 5-9 acertos = capítulo 2
+
+    // 10-14 acertos = capítulo 3
+
+    // ...
+
+    // 35-39 acertos = capítulo 8
+
+    const newChapterIndex = Math.min(
+
+        Math.floor(score / wordsPerChapter),
+
+        chapters.length - 1
+
+    );
+
+
+
+    if (newChapterIndex !== chapterIndex) {
+
+        chapterIndex = newChapterIndex;
+
+        loadChapter();
+
+
+
+        statusElement.textContent =
+
+            `Capítulo ${chapterIndex + 1} alcançado. Continue a operação.`;
+
+    }
+
+
+
+    document.getElementById("requiredScore").textContent =
+
+        finalRequired;
+
+}
+
+
+
+function loadChapter() {
+
+
+
+    const chapter =
+
+        chapters[chapterIndex];
+
+
+
+    chapterTitle.textContent =
+
+        chapter.title;
+
+
+
+    storyElement.innerHTML =
+
+        chapter.story;
+
+
+
+    chapterElement.textContent =
+
+        `${chapterIndex + 1}/${chapters.length}`;
+
+
+
+    statusElement.textContent =
+
+        "Nova operação.";
+
+
+
+    storyElement.scrollTop = 0;
+
+}
+
+
+
+
+
+/* =====================================================
+
+   INIMIGOS
+
+===================================================== */
+
+
+
+function updateEnemies(deltaFactor = 1) {
+    // Multiplica a velocidade-base pelo tempo decorrido relativo a 60 FPS.
+
+
+
+    for (const enemy of enemies) {
+
+
+
+        enemy.y += enemy.speed * deltaFactor;
+
+
+
+        enemy.x +=
+
+            Math.sin(
+
+                enemy.y * 0.01 +
+
+                enemy.wobble
+
+            ) * 0.12;
+
+
+
+        if (
+
+            enemy.y >
+
+            height + 70
+
+        ) {
+
+
+
+            /*
+
+               Em vez de acabar imediatamente,
+
+               apenas registra uma tentativa
+
+               perdida e remove o avião.
+
+            */
+
+
+
+            enemies.splice(
+
+                enemies.indexOf(enemy),
+
+                1
+
+            );
+
+
+
+            attempts++;
+
+            lives--;
+
+
+
+            statusElement.textContent =
+
+                lives > 0
+
+                ? `Contato escapou. Integridade restante: ${lives}`
+
+                : "Aeronave perdida. Operação encerrada.";
+
+
+
+            updateStats();
+
+
+
+            if (lives <= 0) {
+
+                showGameOver("Você perdeu todas as unidades de integridade do Vértice-01.");
+
+                return;
+
+            }
+
+
+
+            break;
+
+        }
+
+    }
+
+}
+
+
+
+
+
+/* =====================================================
+
+   FUNDO
+
+===================================================== */
+
+
+
+function drawBackground() {
+    ctx.fillStyle = "#080b12";
+    ctx.fillRect(0, 0, width, height);
+
+    /*
+     GRADE TÁTICA — aparece somente durante a partida.
+     GRID_SIZE controla o espaçamento; GRID_COLOR controla a cor/transparência.
+    */
+    const GRID_SIZE = 60;
+    const GRID_COLOR = "rgba(126, 151, 180, 0.13)";
+    const GRID_ACCENT = "rgba(214, 185, 140, 0.10)";
+
+    ctx.save();
+    ctx.lineWidth = 1;
+    ctx.strokeStyle = GRID_COLOR;
+    ctx.beginPath();
+
+    for (let x = 0; x <= width; x += GRID_SIZE) {
+        ctx.moveTo(x, 0);
+        ctx.lineTo(x, height);
+    }
+    for (let y = 0; y <= height; y += GRID_SIZE) {
+        ctx.moveTo(0, y);
+        ctx.lineTo(width, y);
+    }
+    ctx.stroke();
+
+    // Eixos centrais discretos, como em uma interface de radar.
+    ctx.strokeStyle = GRID_ACCENT;
+    ctx.beginPath();
+    ctx.moveTo(width / 2, 0);
+    ctx.lineTo(width / 2, height);
+    ctx.moveTo(0, height / 2);
+    ctx.lineTo(width, height / 2);
+    ctx.stroke();
+    ctx.restore();
+}
+
+
+
+
+
+/* =====================================================
+
+   INPUT
+
+===================================================== */
+
+
+
+input.addEventListener(
+
+    "input",
+
+    () => {
+
+
+
+        if (gameOver)
+
+            return;
+
+
+
+        const typed =
+
+            normalize(
+
+                input.value.trim()
+
+            );
+
+
+
+        if (!typed)
+
+            return;
+
+
+
+        /*
+
+           Uma tentativa é registrada
+
+           quando o jogador termina
+
+           uma palavra.
+
+        */
+
+
+
+        for (
+
+            let i = 0;
+
+            i < enemies.length;
+
+            i++
+
+        ) {
+
+
+
+            const enemy =
+
+                enemies[i];
+
+
+
+            if (
+
+                normalize(
+
+                    enemy.word
+
+                ) === typed
+
+            ) {
+
+
+
+                // Toda palavra finalizada conta como uma tentativa.
+
+                // Assim, acertos e erros entram corretamente no cálculo
+
+                // da precisão: acertos / tentativas * 100.
+
+                attempts++;
+
+
+
+                neutralizeEnemy(i);
+
+
+
+                input.value = "";
+
+
+
+                return;
+
+            }
+
+        }
+
+
+
+        /*
+
+           Se o texto digitado já não
+
+           corresponde ao início de
+
+           nenhuma palavra existente,
+
+           limpa o campo.
+
+        */
+
+
+
+        const possible =
+
+            enemies.some(
+
+                enemy =>
+
+                    normalize(
+
+                        enemy.word
+
+                    ).startsWith(
+
+                        typed
+
+                    )
+
+            );
+
+
+
+        if (!possible) {
+
+
+
+            attempts++;
+
+
+
+            input.value = "";
+
+
+
+            statusElement.textContent =
+
+                "Comando inválido.";
+
+
+
+            updateStats();
+
+
+
+        }
+
+
+
+    }
+
+);
+
+
+
+
+
+/* =====================================================
+
+   GAME OVER / REINÍCIO
+
+===================================================== */
+
+
+
+function showGameOver(message) {
+
+
+
+    gameOver = true;
+    musicaFundo.pause();
+    musicToggle.textContent = "♫ Música: desligada";
+
+
+
+    clearInterval(spawnInterval);
+
+
+
+    updateStats();
+
+
+
+    const accuracy =
+
+        attempts > 0 ? Math.min(100, (score / attempts) * 100) : 100;
+
+
+
+    document.getElementById("gameOverMessage").textContent = message;
+
+    document.getElementById("gameOverScore").textContent = score;
+
+    document.getElementById("gameOverAccuracy").textContent = Math.round(accuracy) + "%";
+
+    document.getElementById("gameOverChapter").textContent = `${chapterIndex + 1}/${chapters.length}`;
+
+    document.getElementById("gameOverScreen").style.display = "flex";
+
+}
+
+
+
+function restartGame() {
+
+
+
+    document.getElementById("gameOverScreen").style.display = "none";
+
+    document.getElementById("ending").style.display = "none";
+
+
+
+    clearInterval(spawnInterval);
+
+
+
+    score = 0;
+
+    attempts = 0;
+
+    lives = 3;
+
+    chapterIndex = 0;
+
+    enemies = [];
+
+    particles = [];
+
+    gameOver = false;
+
+    startTime = Date.now();
+    lastFrameTime = 0; // Não herda o tempo do loop anterior.
+
+    loadChapter();
+
+    updateStats();
+
+    input.value = "";
+
+    input.focus();
+
+
+
+    spawnInterval = setInterval(createEnemy, difficulty.spawnTime);
+
+    gameLoop();
+
+}
+
+
+
+function backToDifficulty() {
+    musicaFundo.pause();
+    musicToggle.textContent = "♫ Música: desligada";
+
+
+
+    clearInterval(spawnInterval);
+
+    gameOver = true;
+
+    document.getElementById("gameOverScreen").style.display = "none";
+
+    document.getElementById("ending").style.display = "none";
+
+    document.getElementById("difficultyScreen").style.display = "flex";
+
+}
+
+
+
+
+
+/* =====================================================
+
+   FINAL
+
+===================================================== */
+
+
+
+function finishGame() {
+
+
+
+    if (gameOver)
+
+        return;
+
+
+
+    // São 40 palavras na fase; é necessário acertar 40 para vencer.
+
+    const finalRequired = 40;
+
+
+
+    if (score < finalRequired) {
+
+        return;
+
+    }
+
+
+
+    gameOver = true;
+    musicaFundo.pause();
+    musicToggle.textContent = "♫ Música: desligada";
+
+
+
+    clearInterval(
+
+        spawnInterval
+
+    );
+
+
+
+    updateStats();
+
+
+
+    const minutes =
+
+        elapsedSeconds / 60;
+
+
+
+    const wpm =
+
+        minutes > 0
+
+        ? score / minutes
+
+        : 0;
+
+
+
+    const accuracy =
+
+        attempts > 0
+
+        ? Math.min(100, (score / attempts) * 100)
+
+        : 100;
+
+
+
+    document.getElementById(
+
+        "finalWpm"
+
+    ).textContent =
+
+        Math.round(wpm);
+
+
+
+    document.getElementById(
+
+        "finalWords"
+
+    ).textContent =
+
+        score;
+
+
+
+    document.getElementById(
+
+        "finalAttempts"
+
+    ).textContent =
+
+        attempts;
+
+
+
+    document.getElementById(
+
+        "finalAccuracy"
+
+    ).textContent =
+
+        Math.round(accuracy) + "%";
+
+
+
+    document.getElementById(
+
+        "finalTime"
+
+    ).textContent =
+
+        timeElement.textContent;
+
+
+
+    document.getElementById(
+
+        "ending"
+
+    ).style.display =
+
+        "flex";
+
+}
+
+
+
+
+
+/* =====================================================
+
+   LOOP
+
+===================================================== */
+
+
+
+function gameLoop(timestamp = performance.now()) {
+    if (gameOver) {
+        lastFrameTime = 0;
+        return;
+    }
+
+    /*
+     deltaFactor:
+     - ~1 em 60 FPS
+     - ~0.5 em 120 FPS
+     - ~0.4 em 144 FPS
+     O limite 3 evita saltos excessivos após travamentos ou troca de aba.
+    */
+    const elapsedFrameMs = lastFrameTime
+        ? timestamp - lastFrameTime
+        : REFERENCE_FRAME_MS;
+
+    const deltaFactor = Math.min(
+        Math.max(elapsedFrameMs / REFERENCE_FRAME_MS, 0),
+        3
+    );
+    lastFrameTime = timestamp;
+
+    drawBackground();
+    updateEnemies(deltaFactor);
+    syncAnimatedSprites();
+    updateParticles();
+    drawPlayer();
+
+    for (const enemy of enemies) {
+        drawEnemy(enemy);
+    }
+
+    drawParticles();
+    updateStats();
+    requestAnimationFrame(gameLoop);
+}
+
+
+
+</script>
+
+
+
+</body>
+
+</html>
